@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Betania Communication</title>
@@ -615,6 +614,13 @@ Administration`;
   alert("SMS ready in phone app");
 }
 </script>
-
+<script>
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("./service-worker.js")
+    .then(() => console.log("Service Worker registered"))
+    .catch(err => console.log("Service Worker failed", err));
+}
+</script>
 </body>
+
 </html>
