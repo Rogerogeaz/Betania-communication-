@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html>
+<head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Betania Communication</title>
+
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.screen {
+  display: none;
+  min-height: 100vh;
+  background-size: cover;
+  background-position: center;
+}
+
+.topbar {
+  background: rgba(0,0,0,0.7);
+  color: white;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.topbar img {
+  height: 40px;
+  margin-right: 10px;
+}
+
+.content {
+  padding: 20px;
+}
+
+button {
+  width: 100%;
+  padding: 15px;
+  margin: 10px 0;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  background: #2e7d32;
+  color: white;
+}
+
+.back {
+  background: #555;
+}
+
+/* SETTINGS CARD */
+.settings-box {
+  background: rgba(255,255,255,0.95);
+  padding: 20px;
+  border-radius: 18px;
+  max-width: 360px;
+  margin: 20px auto;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+}
+
+.settings-box h2 {
+  text-align: center;
+}
+
+.settings-box h2 img {
+  height: 50px;
+  margin-bottom: 10px;
+}
+
+.settings-box input,
+.settings-box select {
+  width: 100%;
+  padding: 14px;
+  margin: 10px 0;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 2px solid #333;
+  box-sizing: border-box;
+}
+</style>
+</head>
+
+<body>
+
+<!-- SPLASH -->
+<div id="splash" class="screen" style="display:block; background:#fff; text-align:center; padding-top:40vh;">
+  <img src="https://i.ibb.co/Q7vBvrdd/1000024098.jpg" height="100"><br><br>
+  <strong>Betania Communication</strong>
+</div>
+
+<!-- HOME -->
+<div id="home" class="screen" style="background-image:url('https://i.ibb.co/kj7cHKk/1000024099.png');">
+  <div class="topbar">
+    <img src="https://i.ibb.co/v4JFQ67m/1000024092.jpg">
+    Betania Communication
+  </div>
+  <div class="content">
+    <button onclick="openScreen('settings')">⚙ Settings</button>
+    <button onclick="openScreen('individual')">👤 Individual Parents</button>
+    <button onclick="openScreen('group')">👥 Group / Class</button>
+    <button onclick="openScreen('day')">🏫 Day Schoolers</button>
+    <button onclick="openScreen('general')">📢 General SMS</button>
+  </div>
+</div>
+
+<!-- SETTINGS -->
+<div id="settings" class="screen" style="background-image:url('https://i.ibb.co/KjrfVDBL/1000025033.jpg');">
+  <div class="topbar">
+    <img src="https://i.ibb.co/v4JFQ67m/1000024092.jpg">
+    Settings
+  </div>
+
+  <div class="settings-box">
+    <input id="studentName" placeholder="Student Name">
+    <input id="parentName" placeholder="Parent Name">
+    <input id="studentPhone" placeholder="Phone Number">
+    <input id="studentClass" placeholder="Class (e.g. P4)">
+    <input id="studentAdmission" placeholder="Admission No (optional)">
+
+    <select id="studentCategory">
+  <option value="">Select Category</option>
+  <option>Day</option>
+  <option>Boarder</option>
+</select>
+
+    <button onclick="addStudent()">Save Student</button>
+    <button class="back" onclick="openScreen('home')">⬅ Back</button>
+
+    <div id="studentList"></div>
+  </div>
+</div>
+
+<!-- PLACEHOLDERS --><!-- =========================
+INDIVIDUAL
+========================= -->
+<div id="individual" class="screen"
+     style="background-image:url('https://i.ibb.co/HTRXqQ4R/1000024097.jpg');">
+  <div class="topbar">
+    <img src="https://i.ibb.co/v4JFQ67m/1000024092.jpg">
+    Individual Parents
+  </div><div class="content">
+
+  <input type="text"
+         id="searchParent"
+         placeholder="Search by student, parent or phone"
+         oninput="searchParents()">
+
+  <div id="searchResults"></div>
+<div id="individualList"></div>
+  <div id="selectedParent"
+       style="display:none; margin-top:15px; background:#fff; padding:10px; border-radius:8px;">
+    <strong id="selectedName"></strong><br>
+    <span id="selectedPhone"></span>
+  </div>
+
+  <textarea id="smsMessage"
+            placeholder="Type message here..."
+            style="width:100%; padding:12px; margin-top:10px; border-radius:8px;"></textarea>
+
+  <button onclick="sendIndividualSMS()">Send SMS</button>
+
+  <button class="back" onclick="openScreen('home')">⬅ Back</button>
+
+</div>
+
+</div><!-- =========================
+GROUP / CLASS
+========================= -->
+<div id="group" class="screen"
+     style="background-image:url('https://i.ibb.co/HTRXqQ4R/1000024097.jpg');">
+
+  <div class="topbar">
+    <img src="https://i.ibb.co/v4JFQ67m/1000024092.jpg">
+    Group / Class SMS
+  </div>
+
+  <div class="content">
+
+    <select id="groupClass"
+            style="width:100%; padding:14px; border-radius:8px; margin-bottom:10px;">
+      <option value="">Select Class</option>
+      <option>PP1</option>
+      <option>PP2</option>
+      <option>Grade 1</option>
+      <option>Grade 2</option>
+      <option>Grade 3</option>
+      <option>Grade 4</option>
+      <option>Grade 5</option>
+      <option>Grade 6</option>
+      <option>Grade 7</option>
+      <option>Grade 8</option>
+      <option>Grade 9</option>
+    </select>
+
+    <textarea id="groupMessage"
+      placeholder="Type message to send to this class..."
+      style="width:100%; padding:14px; border-radius:8px; margin-bottom:10px;">
+    </textarea>
+
+    <button onclick="sendGroupSMS()">Send SMS</button>
+
+    <button class="back" onclick="openScreen('home')">⬅ Back</button>
+
+  </div>
+</div>
+
+
+<!-- =========================
+DAY SCHOOLERS
+========================= -->
+<div id="day" class="screen"
+     style="background-image:url('https://i.ibb.co/Q7vBvrdd/1000024098.jpg');">
+
+  <div class="topbar">
+    <img src="https://i.ibb.co/v4JFQ67m/1000024092.jpg">
+    Day Schoolers
+  </div>
+
+  <div class="content">
+
+    <textarea id="dayMessage"
+      placeholder="Type message to send to day schoolers..."
+      style="width:100%; padding:14px; border-radius:8px; margin-bottom:10px;">
+    </textarea>
+
+    <button onclick="sendDaySMS()">Send SMS</button>
+
+    <button class="back" onclick="openScreen('home')">⬅ Back</button>
+
+  </div>
+</div>
+
+<!-- =========================
+GENERAL SMS
+========================= -->
+<div id="general" class="screen"
+     style="background-image:url('https://i.ibb.co/Qjjj6MFF/1000025037.jpg');">
+
+  <div class="topbar">
+    <img src="https://i.ibb.co/v4JFQ67m/1000024092.jpg">
+    General SMS
+  </div>
+
+  <div class="content">
+
+    <textarea id="generalMessage"
+      placeholder="Type message to send to all parents..."
+      style="width:100%; padding:14px; border-radius:8px; margin-bottom:10px;">
+    </textarea>
+
+    <button onclick="sendGeneralSMS()">Send SMS</button>
+
+    <button class="back" onclick="openScreen('home')">⬅ Back</button>
+
+  </div>
+</div>
+<script>
+let editIndex = null;
+
+  function openScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
+  document.getElementById(id).style.display = 'block';
+
+  if (id === "settings") {
+    loadStudents();
+  }
+
+  if (id === "individual") {
+    loadIndividualParents();
+  }
+}
+
+setTimeout(() => openScreen('home'), 2000);
+
+function addStudent() {
+  let student = studentName.value.trim();
+  let parent = parentName.value.trim();
+  let phone = studentPhone.value.trim();
+  let studentClassVal = studentClass.value.trim();
+  let admission = studentAdmission.value.trim();
+  let category = studentCategory.value;
+
+  if (!student || !parent || !phone || !studentClassVal) {
+    alert("Please fill all required fields");
+    return;
+  }
+
+  let students = JSON.parse(localStorage.getItem("students")) || [];
+
+  if (editIndex !== null) {
+    // ✏️ UPDATE EXISTING STUDENT
+    students[editIndex] = {
+      student,
+      parent,
+      phone,
+      class: studentClassVal,
+      admission,
+      category
+    };
+    editIndex = null;
+  } else {
+    // ➕ ADD NEW STUDENT
+    students.push({
+      student,
+      parent,
+      phone,
+      class: studentClassVal,
+      admission,
+      category
+    });
+  }
+
+  localStorage.setItem("students", JSON.stringify(students));
+
+  // clear form
+  studentName.value = "";
+  parentName.value = "";
+  studentPhone.value = "";
+  studentClass.value = "";
+  studentAdmission.value = "";
+
+  alert("Student saved successfully!");
+  loadStudents();
+}
+ function editStudent(index) {
+  let students = JSON.parse(localStorage.getItem("students")) || [];
+  let s = students[index];
+
+  document.getElementById("studentName").value = s.student;
+  document.getElementById("parentName").value = s.parent;
+  document.getElementById("studentPhone").value = s.phone;
+  document.getElementById("studentClass").value = s.class;
+  document.getElementById("studentAdmission").value = s.admission || "";
+  document.getElementById("studentCategory").value = s.category;
+
+  editIndex = index;
+
+  openScreen("settings");
+}
+  function deleteStudent(index) {
+  if (!confirm("Delete this student?")) return;
+
+  let students = JSON.parse(localStorage.getItem("students")) || [];
+  students.splice(index, 1);
+
+  localStorage.setItem("students", JSON.stringify(students));
+  loadStudents();
+}
+function loadIndividualParents() {
+  let students = JSON.parse(localStorage.getItem("students")) || [];
+  let list = document.getElementById("individualList");
+
+  if (!list) return;
+
+  list.innerHTML = "";
+
+  let filtered = students.filter(s => s.category === "Individual");
+
+  if (filtered.length === 0) {
+    list.innerHTML = "<p>No individual parents found.</p>";
+    return;
+  }
+
+  filtered.forEach(s => {
+    list.innerHTML += `
+      <div style="background:#fff;padding:10px;margin-bottom:8px;border-radius:8px;">
+        <strong>${s.student}</strong><br>
+        Parent: ${s.parent}<br>
+        Phone: ${s.phone}<br>
+        Class: ${s.class}<br>
+        Admission: ${s.admission || "—"}
+      </div>
+    `;
+  });
+}
+let selectedPhone = "";
+
+/* SEARCH PARENTS */
+function searchParents() {
+  let query = document.getElementById("searchParent").value.toLowerCase();
+  let students = JSON.parse(localStorage.getItem("students")) || [];
+  let results = document.getElementById("searchResults");
+
+  results.innerHTML = "";
+
+  if (!query) return;
+
+  students.forEach(s => {
+    if (
+      s.student.toLowerCase().includes(query) ||
+      s.parent.toLowerCase().includes(query) ||
+      s.phone.includes(query)
+    ) {
+      let div = document.createElement("div");
+      div.style.background = "#fff";
+      div.style.padding = "10px";
+      div.style.marginBottom = "6px";
+      div.style.borderRadius = "8px";
+      div.style.cursor = "pointer";
+
+      div.innerHTML = `
+        <strong>${s.student}</strong><br>
+        Parent: ${s.parent}<br>
+        Phone: ${s.phone}
+      `;
+
+      div.onclick = () => {
+        selectedPhone = s.phone;
+        document.getElementById("selectedParent").style.display = "block";
+        document.getElementById("selectedName").innerText = s.student;
+        document.getElementById("selectedPhone").innerText = s.phone;
+        results.innerHTML = "";
+      };
+
+      results.appendChild(div);
+    }
+  });
+}
+
+/* SEND SMS */function sendIndividualSMS() {
+  if (!selectedPhone) {
+    alert("Please select a parent first");
+    return;
+  }
+
+  let msgBox = document.getElementById("smsMessage");
+  let msg = msgBox.value.trim();
+
+  if (!msg) {
+    alert("Please type a message");
+    return;
+  }
+
+  let fullMessage =
+`Betania School
+
+${msg}
+
+Regards,
+Administration`;
+
+  // Open phone SMS app
+  window.location.href =
+    "sms:" + selectedPhone + "?body=" + encodeURIComponent(fullMessage);
+
+  // ✅ CLEAR AFTER SENDING
+  msgBox.value = "";
+  selectedPhone = "";
+
+  document.getElementById("selectedParent").style.display = "none";
+  document.getElementById("searchParent").value = "";
+  document.getElementById("searchResults").innerHTML = "";
+
+  alert("SMS ready in phone app");
+}
+// ===== GENERAL SMS =====
+function sendGeneralSMS() {
+  let msgBox = document.getElementById("generalMessage");
+  let msg = msgBox.value.trim();
+
+  if (!msg) {
+    alert("Please type a message");
+    return;
+  }
+
+  let students = JSON.parse(localStorage.getItem("students")) || [];
+
+  if (students.length === 0) {
+    alert("No parents found");
+    return;
+  }
+
+  let phones = students.map(s => s.phone).join(",");
+
+  let fullMessage =
+`Betania School
+
+${msg}
+
+Regards,
+Administration`;
+
+  // Open phone SMS app
+  window.location.href =
+    "sms:" + phones + "?body=" + encodeURIComponent(fullMessage);
+
+  // ✅ clear after sending
+  msgBox.value = "";
+
+  alert("SMS ready in phone app");
+}// ===== GROUP / CLASS SMS =====
+function sendGroupSMS() {
+  let selectedClass = document.getElementById("groupClass").value;
+  let msgBox = document.getElementById("groupMessage");
+  let msg = msgBox.value.trim();
+
+  if (!selectedClass) {
+    alert("Please select a class");
+    return;
+  }
+
+  if (!msg) {
+    alert("Please type a message");
+    return;
+  }
+
+  let students = JSON.parse(localStorage.getItem("students")) || [];
+
+  // filter by class
+  let classStudents = students.filter(
+    s => s.class.toLowerCase() === selectedClass.toLowerCase()
+  );
+
+  if (classStudents.length === 0) {
+    alert("No parents found for this class");
+    return;
+  }
+
+  let phones = classStudents.map(s => s.phone).join(",");
+
+  let fullMessage =
+`Betania School
+
+${msg}
+
+Regards,
+Administration`;
+
+  // open phone SMS app
+  window.location.href =
+    "sms:" + phones + "?body=" + encodeURIComponent(fullMessage);
+
+  // clear after sending
+  msgBox.value = "";
+
+  alert("SMS ready in phone app");
+}
+function loadStudents() {
+  let students = JSON.parse(localStorage.getItem("students")) || [];
+  let list = document.getElementById("studentList");
+
+  if (!list) return;
+  list.innerHTML = "";
+
+  if (students.length === 0) {
+    list.innerHTML = "<p>No students saved.</p>";
+    return;
+  }
+
+  students.forEach((s, index) => {
+    list.innerHTML += `
+      <div style="background:#f5f5f5;padding:10px;margin:8px 0;border-radius:8px;">
+        <strong>${s.student}</strong><br>
+        Parent: ${s.parent}<br>
+        Phone: ${s.phone}<br>
+        Class: ${s.class}<br>
+        Category: ${s.category}<br><br>
+
+        <button type="button" onclick="editStudent(${index})">
+          ✏️ Edit
+        </button>
+
+        <button type="button"
+          onclick="deleteStudent(${index})"
+          style="background:#c62828;color:white;margin-left:6px;">
+          🗑 Delete
+        </button>
+      </div>
+    `;
+  });
+}
+
+function sendDaySMS() {
+  let msgBox = document.getElementById("dayMessage");
+  let msg = msgBox.value.trim();
+
+  if (!msg) {
+    alert("Please type a message");
+    return;
+  }
+
+  let students = JSON.parse(localStorage.getItem("students")) || [];
+
+  // ONLY Day Schoolers
+  let dayStudents = students.filter(s => s.category === "Day");
+
+  if (dayStudents.length === 0) {
+    alert("No day schoolers found");
+    return;
+  }
+
+  let phones = dayStudents.map(s => s.phone).join(",");
+
+  let fullMessage =
+`Betania School
+
+${msg}
+
+Regards,
+Administration`;
+
+  // 📲 OPEN PHONE SMS APP
+  window.location.href =
+    "sms:" + phones + "?body=" + encodeURIComponent(fullMessage);
+
+  // Clear message after sending
+  msgBox.value = "";
+
+  alert("SMS ready in phone app");
+}
+</script>
+
+</body>
+</html>
