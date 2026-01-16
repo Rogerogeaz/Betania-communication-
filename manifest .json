@@ -1,6 +1,7 @@
 {
   "name": "Betania Communication",
   "short_name": "Betania",
+  "description": "School communication app for sending SMS to parents and managing student contacts.",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#ffffff",
