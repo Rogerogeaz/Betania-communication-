@@ -6,6 +6,7 @@
     <title>Betania Communication</title>
 
 <link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#2e7d32">
 <link rel="icon" href="icon-192.png">
 
 <style>
@@ -616,7 +617,7 @@ Administration`;
 </script>
 <script>
 if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("./service-worker.js")
+  navigator.serviceWorker.register("sw.js")
     .then(() => console.log("Service Worker registered"))
     .catch(err => console.log("Service Worker failed", err));
 }
@@ -624,4 +625,3 @@ if ("serviceWorker" in navigator) {
 </body>
 
 </html>
-
