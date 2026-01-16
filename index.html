@@ -617,9 +617,11 @@ Administration`;
 </script>
 <script>
 if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("sw.js")
-    .then(() => console.log("Service Worker registered"))
-    .catch(err => console.log("Service Worker failed", err));
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("/sw.js", { scope: "/" })
+      .then(() => console.log("Service Worker registered"))
+      .catch(err => console.log("Service Worker failed", err));
+  });
 }
 </script>
 </body>
